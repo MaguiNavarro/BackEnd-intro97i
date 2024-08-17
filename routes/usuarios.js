@@ -3,27 +3,18 @@ const { Router } = require ("express");
 
 const router= Router();
 
+const {usuariosGet, usuariosDelete,usuariosPost,usuariosPut}= require("../controllers/usuariosCtrl");//hace mas limpio el codigo
+
 //RUTA GET //PARA PEDIDOS y devuelve
-router.get("/",(req,res)=> {
-   const {limit,key}= req.query;
-   res.json({mensaje:"Mensaje recibido de usuarios",limit,key  })
-});
+router.get("/",usuariosGet);
 
 //RUTA POST //recibe datos NUEVOS
-router.post("/",(req,res)=>{
-    res.json({mensaje:" ENVIO el Mensaje ", 
-
-     });
- });
+router.post("/",usuariosPost);
  
  //RUTA PUT este MODIFICA DATOS
- router.put("/:id",(req,res)=>{
-    res.json({mensaje:" MODIFICO Datos ",  })
- });
+ router.put("/:id",usuariosPut);
 
 //RUTA DELETE este ELIMINA DATOS
-  router.delete("/:id",(req,res)=>{
-    res.json({mensaje:" ELIMINO Datos ",  })
- });
+  router.delete("/:id",usuariosDelete);
 
  module.exports= router; 
