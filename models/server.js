@@ -1,5 +1,7 @@
 const express= require ("express");
 const cors= require("cors");
+//IMPORTAR BD
+const {dbConnection }= require("../dataBase/config")
 
 
 class Server{
@@ -11,6 +13,9 @@ class Server{
 
         //PATH
         this.usuariosPath= "/api/usuarios";//ES COMO voy a LLAMAR a las Rutas
+        //DB
+        this.conectarDB();
+        
         //Middlewares
         this.middlewares(); //Es todo lo que ocurre en medio de los pedidos del frontend y las respuesta del backEnd
 
@@ -18,6 +23,11 @@ class Server{
         this.routes();
 
     }
+    //BASE DATOS
+    async conectarDB(){
+        await dbConnection();
+    }
+
     middlewares(){
         //CORS 
         this.app.use(cors());
