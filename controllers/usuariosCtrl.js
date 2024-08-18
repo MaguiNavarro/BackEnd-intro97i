@@ -9,7 +9,10 @@ const usuariosGet=(  req= request, res= response)=>{
 };
 
 const usuariosPost= ((req=request,res=response)=>{
-    res.json({mensaje:" ENVIO el Mensaje ", 
+  const datos= req.body;
+ // const {nombre,correo,password,rol,edad}= datos;
+
+    res.json({datos, mensaje:" ENVIO el Mensaje ", 
      });
  });
  

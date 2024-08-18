@@ -32,6 +32,8 @@ class Server{
         //CORS 
         this.app.use(cors());
 
+        this.app.use(express.json());//NOS permite config la ruta POST (sino No manda lo del postman)
+
         //Mostrar las carpetas Publicas
         this.app.use(express.static("public")) //Es una forma mas para comprobar que este funcionando el Back
     }
