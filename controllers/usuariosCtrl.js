@@ -28,7 +28,7 @@ const usuariosPost = async  (req=request,res=response)=>{
  //GUARDAR EN BD
  await usuario.save();
 
-    res.json({usuario, mensaje:" ENVIO el Mensaje ", 
+    res.json({usuario, mensaje:"Usuario REGISTRADO ", 
      });
  };
  

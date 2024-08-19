@@ -3,6 +3,7 @@ const { Router } = require ("express");
 const {check}= require ("express-validator");
 const {validarCampos}= require("../middlewares/validar_campos");
 const router= Router();
+const {esMailValido, esRolValido}= require("../helpers/db_validators");
 
 const {usuariosGet, usuariosDelete,usuariosPost,usuariosPut}= require("../controllers/usuariosCtrl");//hace mas limpio el codigo
 
@@ -13,7 +14,8 @@ router.get("/",usuariosGet);
    //AGREGO LAS VALIDACIONES DENTRO DEL CORCHETE
 router.post("/",
   [check("nombre", "EL nombre Es obligatorio").notEmpty(),
-  check("password", "Debe tener 6 caracteres como min").isLength({min:6 }),check("correo", "No es un correo Valido!").isEmail(),
+  check("password", "Debe tener 6 caracteres como min").isLength({ min:6 }), check("correo", "No es un correo Valido!").isEmail(), check("correo").custom(esMailValido), //CUSTOM me permite agregar o usar los metodos que hago
+  check("rol").custom(esRolValido),
   validarCampos, ],
   usuariosPost);
  

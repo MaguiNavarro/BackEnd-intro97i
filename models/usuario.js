@@ -20,12 +20,19 @@ const UsuarioSchema= Schema({
       rol:{
         type: String,
         required: [true, "Este dato es obligatorio!"],
-        enum: ["user", "admin"],
-        default:"user",
+        // enum: ["user", "admin"],
+        // default:"user",
       },
       estado:{
         type:Boolean,
         default:true,
       },
 });
+
+//QUITAR-OCULTAR Datos de la RESPUESTA en bd
+UsuarioSchema.methods.toJSON= function () {
+  const {password, __v, ...usuario}= this.toObject();//...usuario indico que guarde el resto de las prop en usuario
+  return usuario;
+};
+
 module.exports= model("Usuario", UsuarioSchema);
