@@ -33,10 +33,21 @@ const usuariosPost = async  (req=request,res=response)=>{
  };
  
  //RUTA PUT este MODIFICA DATOS
- const usuariosPut=((req=request,res=response)=>{
-
-    res.json({mensaje:" MODIFICO Datos ",  })
- });
+ const usuariosPut=async(req=request,res=response)=>{
+    const {id}= req.params;
+    //PARA MODIFICAR CONTRASEÑA
+    const {password, ...updUsuario}= req.body; //guarda lo modificado y demas en otra variable updUsuario
+    if (password) {
+        //ENcriptar contraseña NUEVAMENTE
+       const salt = bcrypt.genSaltSync(10);//encripta la contraseña, 10 veces encripta
+       const hash = bcrypt.hashSync(password, salt);
+       updUsuario.password= hash;
+    }
+    //encuentra por id y modifica los datos del obj
+    const usuario= await Usuario.findByIdAndUpdate(id, updUsuario, 
+      {new:true} )//Aplica-Guarda los datos a usuario;
+    res.json({usuario,mensaje:"Se MODIFICO los Datos ",  })
+ };
 
 //RUTA DELETE este ELIMINA DATOS
   const usuariosDelete=((req=request,res=response)=>{

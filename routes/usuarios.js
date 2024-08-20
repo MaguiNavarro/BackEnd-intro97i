@@ -3,7 +3,7 @@ const { Router } = require ("express");
 const {check}= require ("express-validator");
 const {validarCampos}= require("../middlewares/validar_campos");
 const router= Router();
-const {esMailValido, esRolValido}= require("../helpers/db_validators");
+const {esMailValido, esRolValido, esIdValido}= require("../helpers/db_validators");
 
 const {usuariosGet, usuariosDelete,usuariosPost,usuariosPut}= require("../controllers/usuariosCtrl");//hace mas limpio el codigo
 
@@ -20,7 +20,8 @@ router.post("/",
   usuariosPost);
  
  //RUTA PUT este MODIFICA DATOS
- router.put("/:id",usuariosPut);
+ router.put("/:id",[check("id", "No es un Id valido!").isMongoId(), check("id").custom(esIdValido), validarCampos,],
+   usuariosPut);
 
 //RUTA DELETE este ELIMINA DATOS
   router.delete("/:id",usuariosDelete);
