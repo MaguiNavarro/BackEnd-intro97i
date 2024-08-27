@@ -14,9 +14,9 @@ const esRolValido= async (rol)=> {
     }
 };
 const esIdValido= async (id)=> {
-    const existeUsuario= await usuario.findById({id});
-    if (existeUsuario) {
-        throw new Error(` El correo ${id} ya existe en la base de datos!`);
+    const existeUsuario= await usuario.findById(id);
+    if (!existeUsuario) {
+        throw new Error(` El Id ${id} No existe en la base de datos!`);
     }
 };
 

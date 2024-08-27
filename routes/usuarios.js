@@ -24,6 +24,6 @@ router.post("/",
    usuariosPut);
 
 //RUTA DELETE este ELIMINA DATOS
-  router.delete("/:id",usuariosDelete);
+  router.delete("/:id",[check("id", "No es un Id valido!").isMongoId(), check("id").custom(esIdValido), validarCampos,], usuariosDelete);
 
  module.exports= router; 

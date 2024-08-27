@@ -1,14 +1,29 @@
 const {response, request}= require("express");
 const Usuario=  require("../models/usuario");
 const bcrypt = require('bcryptjs');
+//
 
 
 //Controlador GET
-const usuariosGet=(  req= request, res= response)=>{
-    const {limit,key }= req.query;
-    res.json({mensaje:"Mensaje recibido de usuarios",limit, //key 
+const usuariosGet= async( req= request, res= response)=>{
+   //Pedido de lista completa
+   //const usuarios= await Usuario.find();
+  
+   //Pedidos de forma particular
+    const {desde=0, limite= 0}= req.query;
+    const estadoTrue= {estado: true}; //GUARDA todos los que tengan la propiedad estado en true
 
-     });
+    //NO OPTIMIZADA
+   // const usuarios= await Usuario.find().skip(desde).limit(limit);//arreglo con los objetos
+   // const total=await Usuario.countDocuments();//me da EL total
+
+    //OPTIMIZAR respuesta ms
+    const [total, usuarios] = await Promise.all([
+      Usuario.countDocuments(estadoTrue),
+      Usuario.find(estadoTrue).skip(desde).limit(limite)
+  ]);
+   
+    res.json({mensaje:"Lista de usuarios",usuarios,total, });
 };
 
 
@@ -50,7 +65,24 @@ const usuariosPost = async  (req=request,res=response)=>{
  };
 
 //RUTA DELETE este ELIMINA DATOS
-  const usuariosDelete=((req=request,res=response)=>{
-    res.json({mensaje:" ELIMINO Datos ",  })
- });
+
+  const usuariosDelete= async (req=request,res=response)=>{
+   const {id}= req.params;
+   //PARA CAMBIAR ESTADO DEL OBJETO
+    const usuario= await Usuario.findById(id);
+    //Verificar estado
+    if (!usuario.estado) {
+      return res.json({
+        msg: "El Usuario ya esta inactivo!",
+      });
+    }
+
+    //Cambiar el valor del estado
+    const usuarioInactivo= await Usuario.findByIdAndUpdate(id,{estado: false}, {new:true} );
+
+    //!ELIMINAR USUARIO De lA BD 
+    // const usuarioEliminado= await Usuario.findByIdAndDelete(id);
+
+    res.json({mensaje:"Se ELIMINO Datos ", usuarioEliminado, })
+  };
 module.exports= {usuariosGet, usuariosDelete,usuariosPost,usuariosPut};
