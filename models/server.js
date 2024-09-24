@@ -13,6 +13,8 @@ class Server{
 
         //PATH
         this.usuariosPath= "/api/usuarios";//ES COMO voy a LLAMAR a las Rutas
+        //Login
+        this.authPath= "/api/auth"; //Para ir al login
         //DB
         this.conectarDB();
         
@@ -43,6 +45,7 @@ class Server{
     //     });
     //FORMA MAS LIMPIA
     this.app.use(this.usuariosPath, require("../routes/usuarios"));//COMO llegar a ese Archivo
+    this.app.use(this.authPath, require("../routes/auth")); //Ruta para LOGIN
 
     }
     listen(){

@@ -1,7 +1,6 @@
 const {response, request}= require("express");
 const Usuario=  require("../models/usuario");
 const bcrypt = require('bcryptjs');
-//
 
 
 //Controlador GET
@@ -68,6 +67,8 @@ const usuariosPost = async  (req=request,res=response)=>{
 
   const usuariosDelete= async (req=request,res=response)=>{
    const {id}= req.params;
+   const usuarioAdmin= req.usuario;
+
    //PARA CAMBIAR ESTADO DEL OBJETO
     const usuario= await Usuario.findById(id);
     //Verificar estado
@@ -83,6 +84,6 @@ const usuariosPost = async  (req=request,res=response)=>{
     //!ELIMINAR USUARIO De lA BD 
     // const usuarioEliminado= await Usuario.findByIdAndDelete(id);
 
-    res.json({mensaje:"Se ELIMINO Datos ", usuarioEliminado, })
+    res.json({mensaje:"Se ELIMINO Datos ", usuarioInactivo, usuarioAdmin,})
   };
 module.exports= {usuariosGet, usuariosDelete,usuariosPost,usuariosPut};

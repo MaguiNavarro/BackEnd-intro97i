@@ -4,8 +4,10 @@ const {check}= require ("express-validator");
 const {validarCampos}= require("../middlewares/validar_campos");
 const router= Router();
 const {esMailValido, esRolValido, esIdValido}= require("../helpers/db_validators");
+const {validarJWT}= require("../middlewares/validar_Jwt")
 
 const {usuariosGet, usuariosDelete,usuariosPost,usuariosPut}= require("../controllers/usuariosCtrl");//hace mas limpio el codigo
+const { esAdmin } = require("../middlewares/validar_roles");
 
 //RUTA GET //PARA PEDIDOS y devuelve
 router.get("/",usuariosGet);
@@ -24,6 +26,6 @@ router.post("/",
    usuariosPut);
 
 //RUTA DELETE este ELIMINA DATOS
-  router.delete("/:id",[check("id", "No es un Id valido!").isMongoId(), check("id").custom(esIdValido), validarCampos,], usuariosDelete);
+  router.delete("/:id",[validarJWT,esAdmin, check("id", "No es un Id valido!").isMongoId(), check("id").custom(esIdValido), validarCampos,], usuariosDelete);
 
  module.exports= router; 
